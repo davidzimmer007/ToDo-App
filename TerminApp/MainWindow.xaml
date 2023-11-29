@@ -1,0 +1,164 @@
+﻿<Window x:Class="TerminApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TerminApp"
+        mc:Ignorable="d"
+        Title="ToDo" WindowState="Maximized" Background="#FF313131" ResizeMode="NoResize" d:DesignWidth="1920" d:DesignHeight="1080">
+
+    <Window.Resources>
+
+        <local:TerminKalender x:Key="MyDataContext">
+
+        </local:TerminKalender>
+
+        <ControlTemplate x:Key="CustomCheckBoxTemplate" TargetType="CheckBox">
+            <Grid>
+                <Border Background="LightGray" CornerRadius="10">
+                    <Grid>
+                        <Rectangle x:Name="Background" Fill="Transparent" />
+                        <Path x:Name="CheckMark" Stroke="White" StrokeThickness="2" Data="M0,5 L5,10 L15,0" Visibility="Collapsed" />
+                    </Grid>
+                </Border>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style x:Key="ListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="DarkGray" />
+            <Setter Property="BorderBrush" Value="DarkGray" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="10">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Gray" />
+                                <Setter Property="BorderBrush" Value="Gray" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+
+
+
+
+
+
+
+
+
+    <Grid>
+
+        <StackPanel Margin="1535,0,0,0" Background="#FF404040">
+            <Label Visibility="Hidden" x:Name="ThemaLabel" Content="Label" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="24" Height="294" FontFamily="Segoe UI Semibold" Width="379" Foreground="White" Background="#FF333D5D"/>
+            <Label Visibility="Hidden" x:Name="OrtLabel" Content="Label" Height="48" FontSize="28"/>
+            <Label Visibility="Hidden" x:Name="DateLabel" Content="Label" Height="40" FontSize="28"/>
+            <Label Visibility="Hidden" x:Name="PrioLabel" Content="Label" Height="44" FontSize="28"/>
+
+        </StackPanel>
+
+
+
+
+
+
+        <StackPanel Margin="0,0,1605,0" Background="#FF404040">
+            <Rectangle Height="38" Stroke="Transparent" Width="196"/>
+            <Button Content="SortByDate" Height="38" FontSize="24" Width="225" Margin="10" Click="Button_Click_1" Foreground="White" Background="#FF333D5D"/>
+            <Button Content="SortByPrio" Height="38" FontSize="24" Width="225" Margin="10"  Foreground="White" Background="#FF333D5D" Click="Button_Click_2"/>
+            <Rectangle Height="111" Width="174" RadiusX="0" RadiusY="0"/>
+
+
+            <Label Content="Termin:" Height="64" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="30" Foreground="White"/>
+            <DatePicker x:Name="MeinDatePicker" Height="196" FontSize="24" Foreground="#FF333333" Background="Transparent" BorderBrush="Transparent" Width="288"/>
+
+
+            <Label Content="Stadt" HorizontalContentAlignment="Center" FontWeight="Bold" Foreground="White"  FontSize="20"/>
+            <Border x:Name="BorderStadtTextBox" Margin="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="6">
+                <TextBox x:Name="StadtTextBox"  BorderThickness="0" Background="Transparent" Foreground="Black" Height="26" FontSize="16" />
+            </Border>
+            <Label Content="Postleitzahl" HorizontalContentAlignment="Center" FontWeight="Bold" Foreground="White"  FontSize="20"/>
+            <Border x:Name="BorderPostleitzahlTextBox" Margin="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="6">
+                <TextBox PreviewTextInput="NurZahlenTextBox_PreviewTextInput" x:Name="PostleitzahlTextBox"  BorderThickness="0" Background="Transparent" Foreground="Black" Height="26" FontSize="16" />
+            </Border>
+            <Label Content="Straße" HorizontalContentAlignment="Center" FontWeight="Bold" Foreground="White"  FontSize="20"/>
+            <Border x:Name="BorderStraßeTextBox" Margin="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="6">
+                <TextBox x:Name="StraßeTextBox"  BorderThickness="0" Background="Transparent" Foreground="Black" Height="26" FontSize="16"/>
+            </Border>
+            <Label Content="Priorität" HorizontalContentAlignment="Center" FontWeight="Bold" Foreground="White"  FontSize="20"/>
+            <Border  x:Name="BorderPrioritaetTextBox" Margin="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="6">
+                <TextBox PreviewTextInput="NurZahlenTextBox_PreviewTextInput" x:Name="PrioritaetTextBox"  BorderThickness="0" Background="Transparent" Foreground="Black" Height="26" FontSize="16"/>
+            </Border>
+            <Button Margin="10" Content="Check" Height="33" FontSize="24" Background="#FF333D5D" Click="Button_Click" Foreground="White"/>
+
+
+
+        </StackPanel>
+
+
+
+
+
+
+
+        <ListBox x:Name="MeineListBox" Margin="360,60,440,160" 
+                 Grid.ColumnSpan="2" 
+                 Background="#FF313131" 
+                 FontSize="36" FontFamily="Segoe UI Semibold" 
+                 BorderBrush="#FF313131" 
+                 ItemsSource="{Binding Termine}"
+                 DataContext="{StaticResource MyDataContext}"
+                 ItemContainerStyle="{StaticResource ListBoxItemStyle}"
+                 SelectionChanged="MeineListBox_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="5">
+                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" Width="20" Height="20" VerticalAlignment="Center" Template="{StaticResource CustomCheckBoxTemplate}" Checked="CheckBox_Checked" />
+                        <TextBlock Text="{Binding Thema}" FontWeight="Bold" FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+
+        <TextBox  
+            x:Name="MeineTextBox"
+            HorizontalAlignment="Left" 
+            Margin="378,964,0,0" 
+            TextWrapping="Wrap" 
+            VerticalAlignment="Top" 
+            FontSize="30" 
+            FontFamily="Segoe UI" 
+            Width="1072" Height="44" 
+            Background="#FF4E4E4E" 
+            Text="" 
+            KeyDown="textBox_KeyDown" >
+
+        </TextBox>
+        <Label Content="Davids To-Do" HorizontalAlignment="Left" Margin="315,0,0,0" VerticalAlignment="Top" Width="1220" Height="55" Foreground="White" FontSize="36" Background="#FF333D5D"/>
+
+
+
+    </Grid>
+
+
+</Window>
